@@ -55,9 +55,22 @@ def find_shortest_path(graph, source, destination):
         perm[next_perm] = True
         last_perm = next_perm
 
-    path_length = v[destination]
-    return path_length
+    #debugging:
+    print "v: ", v
+    print "perm: ", perm
+    print "d: ", d
 
+    path_length = v[destination]
+
+    # construct the path
+    path = [destination]
+    last_visited = destination
+    while (not (source in path)):
+        path.append(d[last_visited])
+        last_visited = d[last_visited]
+    path.reverse()
+
+    return path_length, path
 
 
 G = nx.read_weighted_edgelist("example_1a.edgelist")
@@ -77,4 +90,7 @@ start = time()
 shortest = find_shortest_path(G,'a','i')
 finish = time()
 
-print "shortest path length: ", shortest
+print "shortest path length: ", shortest[0]
+print "shortest path: ", shortest[1]
+print "elapsed time: %0.6f " % (finish - start)
+
