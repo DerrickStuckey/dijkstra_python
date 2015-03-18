@@ -4,7 +4,6 @@ import networkx as nx
 from time import time
 import dijkstra_impl as di
 
-# G = nx.read_weighted_edgelist("example_1a.edgelist")
 G = nx.read_weighted_edgelist("DC.txt")
 
 print "num nodes: ", G.number_of_nodes()
@@ -14,15 +13,26 @@ print "edges: ", G.edges()
 
 print "degree: ", G.degree()
 
-# print "a edges: ", G['a']
-# print G['a']['c']
-# print G['a']['c']['weight']
+paths=[]
+lengths=[]
+times=[]
 
-start = time()
-# shortest = find_shortest_path(G,'a','i')
-shortest = di.find_shortest_path(G, '0','8000')
-finish = time()
+for pair in [('0','8000'),('12','9000'),('100','8500'),('153','2345'),('224','1000'),('314','567'),('1000','7546'),
+             ('0','256'),('10','1257'),('5','6432'),('24','976'),('168','8577')]:
+    start = time()
+    # shortest = di.find_shortest_path(G, '0','8000')
+    shortest = di.find_shortest_path(G, pair[0], pair[1])
+    finish = time()
 
-print "\n\nshortest path length: ", shortest[0]
-print "shortest path: ", shortest[1]
-print "elapsed time: %0.0f ns" % ((finish - start) * 10**9)
+    lengths.append(shortest[0])
+    paths.append(shortest[1])
+    times.append(finish-start)
+
+    print "source: ", pair[0], "; destination: ", pair[1]
+    print "\n\nshortest path length: ", shortest[0]
+    print "shortest path: ", shortest[1]
+    print "elapsed time: %0.2f s" % (finish - start)
+
+print "lengths: ", lengths
+print "paths: ", paths
+print "times: ", times

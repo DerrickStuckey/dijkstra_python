@@ -5,7 +5,7 @@ __author__ = 'dstuckey'
 import networkx as nx
 from time import time
 
-approx_infinite_distance = 1000
+approx_infinite_distance = 1000000
 
 def find_shortest_path(graph, source, destination):
     # initialize v as a dictionary
@@ -41,7 +41,9 @@ def find_shortest_path(graph, source, destination):
                 d[edge_dest] = last_perm
 
         # choose next permanent node
+        next_perm = None
         next_perm_candidates = [n for n in perm.keys() if not perm[n]]
+        # print "next perm candidates: ", next_perm_candidates
         min_dist = approx_infinite_distance
         # print "next perm cands: ", next_perm_candidates
         for cand in next_perm_candidates:
@@ -49,9 +51,14 @@ def find_shortest_path(graph, source, destination):
                 next_perm = cand
                 min_dist = v[cand]
 
+        # if no new nodes can be marked permanent, there is no path to destination
+        if (next_perm==None):
+            raise Exception("No path to destination exists")
+
         # update last_perm var and permanence dictionary
         perm[next_perm] = True
         last_perm = next_perm
+        # print "set as permanent node ", next_perm
 
     #debugging:
     # print "v: ", v
